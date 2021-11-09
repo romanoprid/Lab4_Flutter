@@ -13,20 +13,11 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
-  void isTapped() {
-    setState(() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) {
-          return ItemPage();
-        }),
-      );
-    });
-  }
 
   bool isPressed = true;
 
   List<Category> categories = Utils.getMockedCategory();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +79,13 @@ class _ExplorePageState extends State<ExplorePage> {
                         children: [
                           InkWell(
                             onTap: () {
-                              isTapped();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ItemPage(
+                                          selectedCategory: categories[index],
+                                        )),
+                              );
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
@@ -194,7 +191,15 @@ class _ExplorePageState extends State<ExplorePage> {
                       child: Stack(
                         children: [
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ItemPage(
+                                          selectedCategory: categories[index],
+                                        )),
+                              );
+                            },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Image.asset(
@@ -269,26 +274,11 @@ class _ExplorePageState extends State<ExplorePage> {
                   },
                 ),
               ),
-              NavigationBar()
             ],
           ),
         ),
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home_outlined),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.shopping_bag),
-      //       label: 'My Bag',
-      //     ),
-      //   ],
-      //   currentIndex: _selectedIndex,
-      //   selectedItemColor: Colors.green[800],
-      //   onTap: _onItemTapped,
-      // ),
+      bottomNavigationBar: NavigationBar(),
     );
   }
 }

@@ -6,6 +6,7 @@ class Category {
   int price;
   String imgName;
   List<Category> subCategories;
+
   Category({
     required this.id,
     required this.name,
