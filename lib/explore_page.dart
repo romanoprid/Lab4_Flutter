@@ -12,6 +12,8 @@ class ExplorePage extends StatefulWidget {
   State<ExplorePage> createState() => _ExplorePageState();
 }
 
+List<Category> allCategories = Utils.getMockedCategory();
+
 class _ExplorePageState extends State<ExplorePage> {
   void isTapped() {
     setState(() {
@@ -24,9 +26,9 @@ class _ExplorePageState extends State<ExplorePage> {
     });
   }
 
-  bool isPressed = true;
+  int? selected;
+  List<Category> categories = List.of(allCategories.toList());
 
-  List<Category> categories = Utils.getMockedCategory();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,14 +78,15 @@ class _ExplorePageState extends State<ExplorePage> {
               ),
 
               Expanded(
+                flex: 3,
                 child: ListView.builder(
                   itemCount: categories.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       margin: const EdgeInsets.all(20),
-                      height: MediaQuery.of(context).size.height,
-                      // child:
+                      // height: 20,
+                      // height: MediaQuery.of(context).size.height-500,
                       child: Stack(
                         children: [
                           InkWell(
@@ -139,57 +142,69 @@ class _ExplorePageState extends State<ExplorePage> {
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 5.0),
                 height: 50.0,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        textStyle: const TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () =>
-                          setState(() => {categories = categories}),
-                      child: Text('Disabled',
-                          style: TextStyle(
-                              color: isPressed ? Colors.black : Colors.grey)),
+                child: ListView(scrollDirection: Axis.horizontal, children: [
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 20),
                     ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        textStyle: const TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () => setState(() => isPressed),
-                      child: Text('Disabled',
-                          style: TextStyle(
-                              color: isPressed ? Colors.black : Colors.grey)),
+                    onPressed: ()  {
+                      selected = selected == 0 ? null : 0;
+                      setState(() => {
+                          categories = allCategories
+                              .where((element) =>
+                                  selected == 0 ? element.price > 8000 : true)
+                              .toList()
+                        });},
+                    child: Text('Disabled',
+                        style: TextStyle(
+                            color: selected == 0 ? Colors.black : Colors.grey)),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 20),
                     ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        textStyle: const TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () => setState(() => isPressed),
-                      child: Text('Disabled',
-                          style: TextStyle(
-                              color: isPressed ? Colors.black : Colors.grey)),
+                    onPressed: () {
+                      selected = selected == 1 ? null : 1;
+                      setState(() => {
+                            categories = allCategories
+                                .where((element) => selected == 1
+                                    ? element.price > 4000 &&
+                                        element.price <= 8000
+                                    : true)
+                                .toList()
+                          });
+                    },
+                    child: Text('Disabled',
+                        style: TextStyle(
+                            color: selected == 1 ? Colors.black : Colors.grey)),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      textStyle: const TextStyle(fontSize: 20),
                     ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        textStyle: const TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () => setState(() => isPressed),
-                      child: Text('Disabled',
-                          style: TextStyle(
-                              color: isPressed ? Colors.black : Colors.grey)),
-                    ),
-                  ],
-                ),
+                    onPressed: () {
+                      selected = selected == 2 ? null : 2;
+                      setState(() => {
+                          categories = allCategories
+                              .where((element) =>
+                                  selected == 2 ? element.price <= 4000 : true)
+                              .toList()
+                        });},
+                    child: Text('Disabled',
+                        style: TextStyle(
+                            color: selected == 2 ? Colors.black : Colors.grey)),
+                  ),
+                ]),
               ),
               Expanded(
+                flex: 5,
                 child: ListView.builder(
                   itemCount: categories.length,
                   scrollDirection: Axis.vertical,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
                       padding: const EdgeInsets.all(20),
-                      height: MediaQuery.of(context).size.height / 2,
+                      height: MediaQuery.of(context).size.height / 3,
                       width: MediaQuery.of(context).size.width,
                       child: Stack(
                         children: [
