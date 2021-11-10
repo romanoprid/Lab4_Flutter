@@ -12,21 +12,13 @@ class ExplorePage extends StatefulWidget {
   State<ExplorePage> createState() => _ExplorePageState();
 }
 
-class _ExplorePageState extends State<ExplorePage> {
-  void isTapped() {
-    setState(() {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) {
-          return ItemPage();
-        }),
-      );
-    });
-  }
+List<Category> allCategories = Utils.getMockedCategory();
 
+class _ExplorePageState extends State<ExplorePage> {
   bool isPressed = true;
 
-  List<Category> categories = Utils.getMockedCategory();
+  int? selected;
+  List<Category> categories = List.of(allCategories.toList());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +80,13 @@ class _ExplorePageState extends State<ExplorePage> {
                         children: [
                           InkWell(
                             onTap: () {
-                              isTapped();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ItemPage(
+                                          selectedCategory: categories[index],
+                                        )),
+                              );
                             },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
@@ -146,38 +144,59 @@ class _ExplorePageState extends State<ExplorePage> {
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(fontSize: 20),
                       ),
-                      onPressed: () =>
-                          setState(() => {categories = categories}),
-                      child: Text('Disabled',
+                      onPressed: () {
+                        selected = selected == 0 ? null : 0;
+                        setState(() => {
+                              categories = allCategories
+                                  .where((element) => selected == 0
+                                      ? element.price > 8000
+                                      : true)
+                                  .toList()
+                            });
+                      },
+                      child: Text('8000 and upper',
                           style: TextStyle(
-                              color: isPressed ? Colors.black : Colors.grey)),
+                              color:
+                                  selected == 0 ? Colors.black : Colors.grey)),
                     ),
                     TextButton(
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(fontSize: 20),
                       ),
-                      onPressed: () => setState(() => isPressed),
-                      child: Text('Disabled',
+                      onPressed: () {
+                        selected = selected == 1 ? null : 1;
+                        setState(() => {
+                              categories = allCategories
+                                  .where((element) => selected == 1
+                                      ? element.price > 4000 &&
+                                          element.price <= 8000
+                                      : true)
+                                  .toList()
+                            });
+                      },
+                      child: Text('4000-8000',
                           style: TextStyle(
-                              color: isPressed ? Colors.black : Colors.grey)),
+                              color:
+                                  selected == 1 ? Colors.black : Colors.grey)),
                     ),
                     TextButton(
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(fontSize: 20),
                       ),
-                      onPressed: () => setState(() => isPressed),
-                      child: Text('Disabled',
+                      onPressed: () {
+                        selected = selected == 2 ? null : 2;
+                        setState(() => {
+                              categories = allCategories
+                                  .where((element) => selected == 2
+                                      ? element.price <= 4000
+                                      : true)
+                                  .toList()
+                            });
+                      },
+                      child: Text('Under 4000',
                           style: TextStyle(
-                              color: isPressed ? Colors.black : Colors.grey)),
-                    ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        textStyle: const TextStyle(fontSize: 20),
-                      ),
-                      onPressed: () => setState(() => isPressed),
-                      child: Text('Disabled',
-                          style: TextStyle(
-                              color: isPressed ? Colors.black : Colors.grey)),
+                              color:
+                                  selected == 2 ? Colors.black : Colors.grey)),
                     ),
                   ],
                 ),
@@ -194,7 +213,15 @@ class _ExplorePageState extends State<ExplorePage> {
                       child: Stack(
                         children: [
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ItemPage(
+                                          selectedCategory: categories[index],
+                                        )),
+                              );
+                            },
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Image.asset(
@@ -269,26 +296,11 @@ class _ExplorePageState extends State<ExplorePage> {
                   },
                 ),
               ),
-              NavigationBar()
             ],
           ),
         ),
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home_outlined),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.shopping_bag),
-      //       label: 'My Bag',
-      //     ),
-      //   ],
-      //   currentIndex: _selectedIndex,
-      //   selectedItemColor: Colors.green[800],
-      //   onTap: _onItemTapped,
-      // ),
+      bottomNavigationBar: NavigationBar(),
     );
   }
 }
