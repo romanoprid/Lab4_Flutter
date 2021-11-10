@@ -12,22 +12,12 @@ class ExplorePage extends StatefulWidget {
   State<ExplorePage> createState() => _ExplorePageState();
 }
 
-<<<<<<< HEAD
 List<Category> allCategories = Utils.getMockedCategory();
-=======
 class _ExplorePageState extends State<ExplorePage> {
->>>>>>> d8b8d408d960ebf458c36d0584c43ab8990fa11e
 
-class _ExplorePageState extends State<ExplorePage> {
-  bool isPressed = true;
-
-<<<<<<< HEAD
   int? selected;
   List<Category> categories = List.of(allCategories.toList());
-=======
-  List<Category> categories = Utils.getMockedCategory();
 
->>>>>>> d8b8d408d960ebf458c36d0584c43ab8990fa11e
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,10 +47,7 @@ class _ExplorePageState extends State<ExplorePage> {
                 ],
               ),
               const SizedBox(height: 10),
-              // Row(
-              //   children: [
-              //     _widgetOptions.elementAt(_selectedIndex),
-              //   ],
+             
               Row(
                 children: const [
                   Text(
